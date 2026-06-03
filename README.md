@@ -71,3 +71,13 @@ Planned database tables:
 
 ## Notes
 Currently in planning and early prototyping stage.
+
+
+## TODO
+
+### Memory 
+- Change log / audit trail
+- Who changed it
+- Old value
+- New value
+- Timestamp

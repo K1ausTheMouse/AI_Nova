@@ -1,3 +1,7 @@
+# PROTOYPE MEMORY AND INTERACTION 
+# WILL DELETE IN FUTURE 
+
+
 from datetime import datetime
 import sqlite3
 
