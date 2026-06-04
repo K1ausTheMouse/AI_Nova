@@ -106,7 +106,6 @@ def update_entity_age(entity_id, new_age):
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
 
 
-
 #delete_entity()
 #search_entities()
 
