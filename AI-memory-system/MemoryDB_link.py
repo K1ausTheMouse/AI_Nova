@@ -117,7 +117,7 @@ def delete_entity(entity_id):
 
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
 
-#delete_entity()
+
 #search_entities()
 
 #add_memory()
