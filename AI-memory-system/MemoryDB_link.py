@@ -96,6 +96,18 @@ def update_entity_age(entity_id, new_age):
     conn.close()
 
 
+def delete_entity(entity_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    DELETE FROM entities
+    WHERE entity_id = ?
+                   
+    """,(entity_id,))
+
+    conn.commit()
+    conn.close()
 
 
 
@@ -107,7 +119,7 @@ def update_entity_age(entity_id, new_age):
 
 
 
-#delete_entity()
+
 #search_entities()
 
 #add_memory()
