@@ -81,3 +81,9 @@ Currently in planning and early prototyping stage.
 - Old value
 - New value
 - Timestamp
+
+### Enterity
+
+### Enviromrnt
+
+### Interaction
