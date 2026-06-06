@@ -111,6 +111,31 @@ def delete_entity(entity_id):
 
 
 
+# SHOULD I UPGRADE IT SO NOVA CAN SEARCH FROM CHATS? IDK IF AI ALREADY DOES THAT BUT WE WILL SEE IN THE FUTURE IF I NEED TO ADD IT
+def search_entity(name, surname):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT entity_id
+        FROM entities
+        WHERE name = ?
+        AND (
+            surname = ?
+            OR (surname IS NULL AND ? IS NULL)
+        )
+    """, (name, surname, surname))
+
+    result = cursor.fetchone()
+
+    conn.close()
+
+    return result
+
+
+
+
+
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
@@ -118,7 +143,6 @@ def delete_entity(entity_id):
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
 
 
-#search_entities()
 
 #add_memory()
 #get_memories_for_entity()
