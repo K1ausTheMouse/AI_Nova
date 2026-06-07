@@ -174,23 +174,41 @@ def add_memory(
     conn.close()
 
 
-# EDIT LATERR
-   # def search_memories(entity_id, keyword):
-   # conn = sqlite3.connect(DB_PATH)
-   # cursor = conn.cursor()
 
-    #cursor.execute("""
-    #SELECT content FROM memories
-    #WHERE entity_id = ?
-    #AND content LIKE ?
-    #ORDER BY importance DESC, datetime DESC
-    #LIMIT 5 
-    #""", (entity_id, f"%{keyword}%"))
+#add_memory()
 
-   # results = cursor.fetchall()
-    #conn.close() 
 
-   # return results
+#get_memories_for_entity()
+
+
+
+
+def search_memories(entity_id, keyword=None):
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT title,
+       content,
+       importance,
+       confidence,
+       datetime
+    FROM memories
+    WHERE entity_id = ?
+    AND(
+        title LIKE ?
+        OR content LIKE ?
+    )
+    ORDER BY importance DESC, datetime DESC
+    LIMIT 5 
+    """, (entity_id, f"%{keyword}%",f"%{keyword}%"))
+
+    results = cursor.fetchall()
+    cursor.close()
+    conn.close() 
+
+    return results
 
 
 # TODO: 
@@ -203,7 +221,7 @@ def add_memory(
 
 #add_memory()
 #get_memories_for_entity()
-#search_memories()
+
 
 #add_relationship()
 #get_relationships()
