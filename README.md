@@ -31,7 +31,8 @@ Planned database tables:
 - memories
 - interactions
 - environment
-
+- relationships
+  
 ## Development Plan
 
 ### Stage 1
