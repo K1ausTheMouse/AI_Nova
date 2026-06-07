@@ -133,7 +133,64 @@ def search_entity(name, surname):
     return result
 
 
+def add_memory(
+    entity_id,
+    title,
+    content,
+    source,
+    confidence,
+    memory_type,
+    importance,
+    created_at
+):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
 
+    cursor.execute("""
+        INSERT INTO memories (
+            entity_id,
+            title,
+            content,
+            source,
+            confidence,
+            type,
+            importance,
+            created_at
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """,(
+        entity_id,
+        title,
+        content,
+        source,
+        confidence,
+        memory_type,
+        importance,
+        created_at   
+        ))
+    
+    
+    conn.commit()
+    conn.close()
+
+
+# EDIT LATERR
+   # def search_memories(entity_id, keyword):
+   # conn = sqlite3.connect(DB_PATH)
+   # cursor = conn.cursor()
+
+    #cursor.execute("""
+    #SELECT content FROM memories
+    #WHERE entity_id = ?
+    #AND content LIKE ?
+    #ORDER BY importance DESC, datetime DESC
+    #LIMIT 5 
+    #""", (entity_id, f"%{keyword}%"))
+
+   # results = cursor.fetchall()
+    #conn.close() 
+
+   # return results
 
 
 # TODO: 
