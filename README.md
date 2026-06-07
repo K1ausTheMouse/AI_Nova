@@ -31,7 +31,8 @@ Planned database tables:
 - memories
 - interactions
 - environment
-
+- relationships
+  
 ## Development Plan
 
 ### Stage 1
@@ -61,7 +62,6 @@ Planned database tables:
 - More advanced memory system
 - More natural,fast responses
 - Full physical system
-- Human body
 
 
 ## What has been done.
