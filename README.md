@@ -62,7 +62,6 @@ Planned database tables:
 - More advanced memory system
 - More natural,fast responses
 - Full physical system
-- Human body
 
 
 ## What has been done.
