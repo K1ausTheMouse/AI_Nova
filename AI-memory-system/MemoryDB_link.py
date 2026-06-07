@@ -178,7 +178,41 @@ def add_memory(
 #add_memory()
 
 
-#get_memories_for_entity()
+
+def get_memories_for_entity(entity_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT id,
+       title,
+       content,
+       importance,
+       confidence 
+    content FROM memories
+    WHERE entity_id = ?
+    ORDER BY importance DESC, datetime DESC
+    LIMIT 5 
+    """, (entity_id,))
+                   
+                   
+    results = cursor.fetchall()
+
+    now = datetime.now().isoformat()
+
+    for memory in results:
+        memory_id = memory[0]
+        
+        cursor.execute("""
+        UPDATE memories
+        SET last_accessed = ?
+        WHERE id = ?
+        """, (now, memory_id))
+
+    conn.commit()
+    conn.close()
+
+    return results
 
 
 

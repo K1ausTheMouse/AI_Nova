@@ -78,21 +78,7 @@ def add_interaction(entity_id, user_input, response):
     conn.close()
 
 
-def get_memories(entity_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
 
-    cursor.execute("""
-    SELECT content FROM memories
-    WHERE entity_id = ?
-    ORDER BY importance DESC, datetime DESC
-    LIMIT 5
-    """, (entity_id,))
-
-    result = cursor.fetchall()
-    conn.close()
-
-    return result
 
 def get_memories(entity_id):
     conn = sqlite3.connect(DB_PATH)
