@@ -242,6 +242,9 @@ def search_memories(entity_id, keyword=None):
 
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
 
+# check_entities -  check if that entity already exists 
+# delete_memory 
+# update_memory 
 
 
 #add_relationship()
