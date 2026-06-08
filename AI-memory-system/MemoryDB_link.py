@@ -51,7 +51,7 @@ def get_entity(entity_id= None, name= None, surname= None):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT* FROM entity WHERE id = ? OR (name = ? AND surname = ?)",(id, name, surname))
+    cursor.execute("SELECT* FROM entity WHERE id = ? OR (name = ? AND surname = ?)",(entity_id, name, surname))
     row = cursor.fetchone()
 
     conn.close()
@@ -72,7 +72,7 @@ def update_entity(entity_id, new_description):
         UPDATE entities
         SET description = ?,
         updated_at = ?,
-        WHERE id = ?
+        WHERE entity_id = ?
     """,(new_description, now, entity_id))
 
     conn.commit()
@@ -167,18 +167,19 @@ def add_memory(entity_id, title, content, source, confidence, type, importance ,
 
     conn.commit()
     conn.close()
-    
+
 
 def get_memories_for_entity(entity_id):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT id,
-       title,
-       content,
-       importance,
-       confidence 
+    SELECT 
+        entity_id,
+        title,
+        content,
+        importance,
+        confidence 
     content FROM memories
     WHERE entity_id = ?
     ORDER BY importance DESC, datetime DESC
