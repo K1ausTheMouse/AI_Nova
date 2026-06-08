@@ -133,46 +133,6 @@ def search_entity(name, surname):
     return result
 
 
-def add_memory(
-    entity_id,
-    title,
-    content,
-    source,
-    confidence,
-    memory_type,
-    importance,
-    created_at
-):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        INSERT INTO memories (
-            entity_id,
-            title,
-            content,
-            source,
-            confidence,
-            type,
-            importance,
-            created_at
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """,(
-        entity_id,
-        title,
-        content,
-        source,
-        confidence,
-        memory_type,
-        importance,
-        created_at   
-        ))
-    
-    
-    conn.commit()
-    conn.close()
-
 
 
 def add_memory(entity_id, title, content, source, confidence, type, importance , datetime):
@@ -207,6 +167,7 @@ def add_memory(entity_id, title, content, source, confidence, type, importance ,
 
     conn.commit()
     conn.close()
+    
 
 def get_memories_for_entity(entity_id):
     conn = sqlite3.connect(DB_PATH)
