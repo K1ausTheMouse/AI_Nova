@@ -175,9 +175,38 @@ def add_memory(
 
 
 
-#add_memory()
+def add_memory(entity_id, title, content, source, confidence, type, importance , datetime):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
 
+    now = datetime.now().isoformat()
 
+    cursor.execute("""
+    INSERT INTO MEMORIES (
+        entity_id,
+        title,
+        content, 
+        source,
+        confidence,
+        type,
+        importance,
+        datetime, 
+        created_at, 
+        last_accessed)
+    VALUES(?,?,?,?,?,?,?,?,?,?)
+    """,(entity_id,
+        title,
+        content, 
+        source,
+        confidence,
+        type,
+        importance,
+        datetime, 
+        now, 
+        now))
+
+    conn.commit()
+    conn.close()
 
 def get_memories_for_entity(entity_id):
     conn = sqlite3.connect(DB_PATH)
@@ -251,10 +280,6 @@ def search_memories(entity_id, keyword=None):
 
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
 
-
-
-#add_memory()
-#get_memories_for_entity()
 
 
 #add_relationship()
