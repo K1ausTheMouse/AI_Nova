@@ -235,6 +235,18 @@ def search_memories(entity_id, keyword=None):
 
     return results
 
+def delete_memory(memory_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    DELETE FROM entities
+    WHERE id = ?
+                   
+    """,(memory_id,))
+
+    conn.commit()
+    conn.close()
 
 # TODO: 
 
@@ -243,7 +255,6 @@ def search_memories(entity_id, keyword=None):
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
 
 # check_entities -  check if that entity already exists 
-# delete_memory 
 # update_memory 
 
 
