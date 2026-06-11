@@ -248,6 +248,35 @@ def delete_memory(memory_id):
     conn.commit()
     conn.close()
 
+
+def update_memory(memory_id, entity_id, content, importance, confidence):
+    
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+   
+
+    cursor.execute("""
+        UPDATE memories
+        SET 
+            content = ?,
+            importance = ?,
+            confidence = ?,
+            last_accessed = ?
+        WHERE entity_id = ? OR id = ?
+    """,(
+        content,
+        importance,
+        confidence,
+        datetime.now().isoformat(),
+        entity_id,
+        memory_id
+    ))
+
+    conn.commit()
+    conn.close()
+
+
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
@@ -255,7 +284,7 @@ def delete_memory(memory_id):
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
 
 # check_entities -  check if that entity already exists 
-# update_memory 
+
 
 
 #add_relationship()
