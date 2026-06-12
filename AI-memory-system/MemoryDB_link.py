@@ -277,15 +277,34 @@ def update_memory(memory_id, entity_id, content, importance, confidence):
     conn.close()
 
 
+def check_entities(entity_id, name, surname):
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+
+    cursor.execute("""
+    SELECT EXISTS(
+        SELECT 1
+        FROM entities
+        WHERE entity_id = ?
+        OR (name = ? AND surname = ?)
+    )
+    """, (entity_id, name, surname))
+
+    exists = cursor.fetchone()[0]
+
+    conn.close()
+
+    return bool(exists)
+
+
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
 
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
-
-# check_entities -  check if that entity already exists 
-
-
+ 
 
 #add_relationship()
 #get_relationships()
