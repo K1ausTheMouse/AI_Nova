@@ -299,6 +299,34 @@ def check_entities(entity_id, name, surname):
     return bool(exists)
 
 
+
+def add_relationship(from_entity_id, to_entity_id, relation, strength=None):
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    now = datetime.now().isoformat()
+
+    cursor.execute(""" 
+    INSERT INTO relationships (
+        from_entity_id, 
+        to_entity_id, 
+        relation,
+        strength, 
+        created_at
+    )
+
+    VALUES (?, ?, ?, ?, ?)""",( 
+        from_entity_id,
+        to_entity_id,
+        relation,
+        strength,
+        now))
+
+    conn.commit()
+    conn.close()
+
+
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
@@ -306,7 +334,6 @@ def check_entities(entity_id, name, surname):
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
  
 
-#add_relationship()
 #get_relationships()
 
 #add_interaction()
