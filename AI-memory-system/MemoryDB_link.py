@@ -496,15 +496,62 @@ def compress_interactions_to_memory(entity_id, limit):
 
     return memory_content
 
+def add_enviroment_item(type, file_path=None, description=None, summary=None):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
 
+        cursor.execute("""
+            INSERT INTO enviroment(
+                type,
+                file_path,
+                description,
+                summary
+            )
+            VALUES (?,?,?,?)
+        """,(
+            type,
+            file_path,
+            description,
+            summary
+        ))
+
+        conn.commit()
+
+
+def get_enviroment_item(type=None):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        if type:
+            cursor.execute("""
+                SELECT id, type, file_path, description,summary
+                FROM enviroment 
+                WHERE type = ?
+            """,(type,))
+        else:
+            cursor.execute("""
+                SELECT id, type, file_path, description, summary
+                FROM enviroment
+            """)
+
+        rows = cursor.fetchall()
+
+    items = []
+
+    for row in rows:
+        items.append({
+            "id": row[0],
+            "type": row[1],
+            "file_path": row[2],
+            "description": row[3],
+            "summary": row[4]
+        })
+
+    return items
+        
 
 
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
 
-# FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
- 
-
-#set_environment_value()
-#get_environment_value()
