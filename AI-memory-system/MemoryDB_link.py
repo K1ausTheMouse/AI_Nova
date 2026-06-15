@@ -5,6 +5,8 @@ import json
 # AI FROM JSON TO DB , ALSO HOLDS CACHE MEMORY IN JSON 
 
 DB_PATH = "AI-memory-system/Memories.db"
+CACHE_PATH = "AI-memory-system/interations_cache.json"
+
 
 def add_entity(name, entity_type, description=None, aliases=None, surname=None, age=None):
     conn = sqlite3.connect(DB_PATH)
@@ -387,6 +389,45 @@ def add_interaction(
     conn.close()
 
 
+def get_recent_interactions(limit=50):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    interactions = []
+
+    cursor.execute(""" 
+        SELECT id, entity_id, type, input, response, summary, mood, topic, created_at
+        FROM interactions
+        ORDER BY created_at DESC
+        LIMIT ?
+    """,(limit,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+
+    for row in rows:
+        interactions.append({
+            "id": row[0],
+            "entity_id": row[1],
+            "type": row[2],
+            "input": row[3],
+            "response": row[4],
+            "summary": row[5],
+            "mood": row[6],
+            "topic": row[7],
+            "created_at": row[8]
+        })
+    
+    return interactions 
+
+def update_recent_interaction_cache(limit=50):
+    recent = get_recent_interactions(limit)
+
+    with open(CACHE_PATH, "w", encoding="utf-8") as file:
+        json.dump(recent, file, indent=4)
+    
+
+
 
 # TODO: 
 
@@ -396,8 +437,8 @@ def add_interaction(
  
 #compress_interactions_to_memory()
 
-#add_interaction()
-#get_recent_interactions()
+
+
 
 #set_environment_value()
 #get_environment_value()
