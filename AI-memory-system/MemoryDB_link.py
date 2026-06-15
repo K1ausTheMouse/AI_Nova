@@ -327,6 +327,24 @@ def add_relationship(from_entity_id, to_entity_id, relation, strength=None):
     conn.close()
 
 
+def get_relationships(entity_id):
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM relationships
+        WHERE from_entity_id = ?
+        OR to_entity_id = ?
+    """, (entity_id, entity_id))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return rows
+
+
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
@@ -334,7 +352,7 @@ def add_relationship(from_entity_id, to_entity_id, relation, strength=None):
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
  
 
-#get_relationships()
+
 
 #add_interaction()
 #get_recent_interactions()
