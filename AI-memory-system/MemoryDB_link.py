@@ -345,14 +345,56 @@ def get_relationships(entity_id):
     return rows
 
 
+
+def add_interaction(
+    entity_id,
+    type,
+    user_input,
+    response=None,
+    summary=None,
+    mood=None,
+    topic=None
+):
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    now = datetime.now().isoformat()
+
+    cursor.execute("""
+    INSERT INTO interactions(
+        entity_id,
+        type,
+        input,
+        response,
+        summary,
+        mood,
+        topic,
+        now               
+    )
+
+    VALUES(?,?,?,?,?,?,?,?)""",(
+        entity_id,
+        type,
+        user_input,
+        response,
+        summary,
+        mood,
+        topic,
+        now ))
+
+    conn.commit()
+    conn.close()
+
+
+
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
 
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
  
-
-
+#compress_interactions_to_memory()
 
 #add_interaction()
 #get_recent_interactions()
