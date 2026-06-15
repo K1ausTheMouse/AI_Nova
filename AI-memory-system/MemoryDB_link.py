@@ -429,16 +429,82 @@ def update_recent_interaction_cache(limit=50):
 
 
 
+def compress_interactions_to_memory(entity_id, limit):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT input,response, summary, mood, topic, created_at
+        FROM interactions
+        WHERE entity_id = ?
+        ORDER BY created_at DESC
+        LIMIT ?
+
+    """, (entity_id, limit))
+
+    rows = cursor.fetchall()
+    
+    if not rows:
+        conn.close()
+        return None
+    
+    summaries = []
+
+    for row in rows:
+        user_input = row[0]
+        response = row[1]
+        summary = row[2]
+        mood = row[3]
+        topic = row[4]
+
+        if summary:
+            summaries.append(summary)
+        else:
+            summaries.append(f"User said: {user_input} | Assistant replied: {response}")
+    
+    memory_content = "\n".join(summaries)
+
+    now = datetime.now().isoformat()
+
+    cursor.execute("""
+    INSERT INTO memories(
+        entity_id,
+        title,
+        content,
+        source,
+        confidence,
+        type,
+        importance,
+        created_at,
+        last_accessed
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        entity_id,
+        "Compressed recent interaction",
+        memory_content,
+        "Interactions",
+        70,
+        "Compressed_summary",
+        5,
+        now,
+        now
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return memory_content
+
+
+
+
 # TODO: 
 
 # use "with sqlite3.connect(DB_PATH) as conn:"
 
 # FUCTCTIONS FOR LATER TO MAKES LINKS FOR THE AI TO ACCESS THE DB 
  
-#compress_interactions_to_memory()
-
-
-
 
 #set_environment_value()
 #get_environment_value()
