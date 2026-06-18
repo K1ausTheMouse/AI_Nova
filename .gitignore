@@ -183,3 +183,4 @@ cython_debug/
 # Local project files
 *.db
 *.txt
+.vscode/
