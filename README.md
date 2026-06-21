@@ -36,8 +36,8 @@ Planned database tables:
 ## Development Plan
 
 ### Stage 1
-- Create database
-- Store simple text memory
+- Create database ✅
+- Store simple text memory ✅
 - Retrieve memory
 - Connect AI model
 
