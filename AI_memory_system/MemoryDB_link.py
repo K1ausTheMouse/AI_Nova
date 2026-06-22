@@ -4,8 +4,8 @@ import json
 
 # AI FROM JSON TO DB , ALSO HOLDS CACHE MEMORY IN JSON 
 
-DB_PATH = "AI-memory-system/Memories.db"
-CACHE_PATH = "AI-memory-system/interations_cache.json"
+DB_PATH = "AI_memory_system/Memories.db"
+CACHE_PATH = "AI_memory_system/interations_cache.json"
 
 
 def add_entity(name, entity_type, description=None, aliases=None, surname=None, age=None):
@@ -372,7 +372,7 @@ def add_interaction(
         summary,
         mood,
         topic,
-        now               
+        created_at             
     )
 
     VALUES(?,?,?,?,?,?,?,?)""",(

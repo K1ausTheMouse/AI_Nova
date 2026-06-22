@@ -1,5 +1,14 @@
 from ollama_client import chat_with_nova
 from prompt import SYSTEM_PROMPT
+import sys
+from pathlib import Path
+
+
+sys.path.append(
+    str(Path(__file__).resolve().parent.parent / "AI_memory_system")
+)
+
+from MemoryDB_link import add_interaction
 
 messages = []
 
@@ -30,6 +39,11 @@ while True:
     messages.append({
         "role": "assistant",
         "content": response
-    }
+    })
 
-)
+    add_interaction(
+        entity_id = None,
+        type = "chat",
+        user_input = user_input,
+        response = response
+    )
