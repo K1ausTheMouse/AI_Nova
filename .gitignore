@@ -185,3 +185,4 @@ cython_debug/
 *.txt
 .vscode/
 prompt.py
+cache.json
