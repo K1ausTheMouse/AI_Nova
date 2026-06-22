@@ -2,14 +2,11 @@ from ollama import Client
 
 client = Client()
 
-response = client.chat(
-    model= "llama3:8b",
-    messages=[
-        {
-            "role": "user", 
-            "content": "Hello"
-        }
-    ]
-)
+def chat_with_nova(messages):
 
-print(response["message"]["content"])
+    response = client.chat(
+        model = "llama3:8b",
+        messages = messages
+    )
+
+    return (response["message"]["content"])
