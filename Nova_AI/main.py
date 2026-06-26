@@ -8,29 +8,33 @@ sys.path.append(
     str(Path(__file__).resolve().parent.parent / "AI_memory_system")
 )
 
-from MemoryDB_link import add_interaction
+import MemoryDB_link 
+import tools
 
-messages = []
-
-messages = [
-    {
-        "role": "system",
-        "content": SYSTEM_PROMPT
-    }
-]
-
-
+# main loop for the ai chat 
 while True:
-
+    # messages 
     user_input = input("> ")
 
     if user_input.lower() in ["exit", "quit"]:
         break
 
-    messages.append({
-        "role": "user",
-        "content": user_input
-    })
+    
+
+    context = tools.find_relevant_context(user_input)
+
+
+    messages = [
+        {
+            "role": "system",
+            "content": SYSTEM_PROMPT + "\n\nRecent previous chats:\n" + context 
+        },
+        {
+            "role": "user",
+            "content": user_input
+        }
+    ]
+
 
     response = chat_with_nova(messages)
 
@@ -41,9 +45,61 @@ while True:
         "content": response
     })
 
-    add_interaction(
+
+
+    # memory links to save and retreve data 
+
+    # interactions 
+
+    MemoryDB_link.add_interaction(
         entity_id = None,
         type = "chat",
         user_input = user_input,
         response = response
     )
+
+    
+
+
+# functions  
+   
+""" 
+# ENTITYS 
+
+add_entity()
+get_entity_id()
+get_entity()
+update_entity()
+update_entity_age()
+delete_entity()
+search_entity()
+check_entities()
+
+"""
+
+"""
+# Memory
+
+add_memory()
+get_memories_for_entity()
+search_memories()
+update_memory()
+delete_memory()
+compress_interactions_to_memory()
+
+"""
+
+"""
+#relationship
+
+add_relationship()
+get_relationships()
+
+"""
+
+"""
+# enviroment
+
+add_enviroment_item()
+get_enviroment_item()
+"""
