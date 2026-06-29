@@ -4,100 +4,89 @@ import json
 import ollama 
 from AI_memory_system.context.prompt import CONTEXT_PROMPT
 
-def generate_summary(user_input, response):
+
+def process_context(user_input, response):
+
     prompt = f"""
-    
-Summarise this interaction in one short sentence.
+You are Nova's context processor.
+
+You are NOT a chatbot.
+
+Your only job is to extract structured data.
+
+Return ONLY valid JSON.
+
+Do not explain.
+Do not apologise.
+Do not use markdown.
+Do not write any text before or after the JSON.
+
+The response MUST start with {{
+The response MUST end with }}
+
+Schema:
+
+{{
+  "summary": "string",
+  "topic": "string"
+}}
 
 User:
 {user_input}
 
 Nova:
 {response}
-
-Return only the sentence.
- """
-    
-    result = ollama.chat(
-        model="llama3:8b",
-        messages=[
-            {"role": "user", "content": prompt}
-        ]
-    )
-
-
-    summary = result["message"]["content"].strip()
-    return summary
-
-
-
-
-
-def generate_topic(user_input, response):
-    prompt = f"""
-    
-Determine the primary topic of this interaction.
-
-Rules:
-- Return only the topic.
-- Use 1 to 5 words.
-- Be specific when possible.
-- Do not explain.
-
-User:
-{user_input}
-
-Nova:
-{response}
-
-Return only the sentence.
- """
-    
-    result = ollama.chat(
-        model="llama3:8b",
-        messages=[
-            {"role": "user", "content": prompt}
-        ]
-    )
-
-
-    topic = result["message"]["content"].strip()
-    return topic
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
-    raw = result["message"]["content"]
+    result = ollama.chat(
+        model="llama3:8b",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    print ("Reuslts", result)
+
+    raw = result["message"]["content"].strip()
+
+    print("raw ", raw)
+
+    start = raw.find("{")
+    end = raw.rfind("}") + 1
+
+    if start == -1 or end == 0:
+        print("Context processor did not return valid JSON:")
+        print(raw)
+        return {"summary": None, "topic": None}
+
+    raw = raw[start:end]
+
+    
 
     try:
         data = json.loads(raw)
-        print(data)
-        return data
+        return{
+            "summary": data.get("summary"),
+            "topic": data.get("topic")
+        }
     
     except json.JSONDecodeError:
         print("Context processor did not return valid JSON: ")
         print(raw)
-        return None
+        return {
+            "summary": None,
+            "topic": None
+        }
 
-"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

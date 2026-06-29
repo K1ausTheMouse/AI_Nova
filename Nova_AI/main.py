@@ -1,13 +1,8 @@
 from ollama_client import chat_with_nova
 from prompt import SYSTEM_PROMPT
-#import sys
-#from pathlib import Path
 
-#sys.path.append(
- #   str(Path(__file__).resolve().parent.#parent / "AI_memory_system")
-#)
 
-from AI_memory_system.context.processor import generate_summary, generate_topic
+from AI_memory_system.context.processor import process_context
 from AI_memory_system import MemoryDB_link
 import tools
 
@@ -45,10 +40,7 @@ while True:
         "content": response
     })
 
-    summary = generate_summary(user_input, response)
-    print("Summary:", summary)
-    topic = generate_topic(user_input, response)
-
+    context = process_context(user_input, response)
 
     # memory links to save and retreve data 
 
@@ -59,8 +51,8 @@ while True:
         type = "chat",
         user_input = user_input,
         response = response,
-        summary = summary,
-        topic = topic
+        summary = context["summary"],
+        topic = context["topic"]
     )
 
     
