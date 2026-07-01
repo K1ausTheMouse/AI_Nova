@@ -52,7 +52,8 @@ while True:
         user_input = user_input,
         response = response,
         summary = context["summary"],
-        topic = context["topic"]
+        topic = context["topic"],
+        mood = context["mood"]
     )
 
     

@@ -28,7 +28,8 @@ Schema:
 
 {{
   "summary": "string",
-  "topic": "string"
+  "topic": "string",
+  "mood": "string"
 }}
 
 User:
@@ -37,12 +38,15 @@ User:
 Nova:
 {response}
 """
+    
+
+
     result = ollama.chat(
         model="llama3:8b",
         messages=[{"role": "user", "content": prompt}]
     )
 
-    print ("Reuslts", result)
+    print ("Reuslts: ", result)
 
     raw = result["message"]["content"].strip()
 
@@ -54,7 +58,7 @@ Nova:
     if start == -1 or end == 0:
         print("Context processor did not return valid JSON:")
         print(raw)
-        return {"summary": None, "topic": None}
+        return {"summary": None, "topic": None, "mood": None}
 
     raw = raw[start:end]
 
@@ -64,7 +68,8 @@ Nova:
         data = json.loads(raw)
         return{
             "summary": data.get("summary"),
-            "topic": data.get("topic")
+            "topic": data.get("topic"),
+            "mood": data.get("mood")
         }
     
     except json.JSONDecodeError:
@@ -72,7 +77,8 @@ Nova:
         print(raw)
         return {
             "summary": None,
-            "topic": None
+            "topic": None,
+            "mood": None
         }
 
 
