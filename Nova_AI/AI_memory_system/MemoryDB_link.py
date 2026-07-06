@@ -64,7 +64,7 @@ def get_entity(entity_id= None, name= None, surname= None):
     return row[0]
 
 
-def update_entity(entity_id, new_description):
+def update_entity(entity_id, name, surname, age, entity_type, description, aliases):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -72,14 +72,28 @@ def update_entity(entity_id, new_description):
 
     cursor.execute("""
         UPDATE entities
-        SET description = ?,
-        updated_at = ?,
-        WHERE entity_id = ?
-    """,(new_description, now, entity_id))
+        SET
+            name = ?,
+            surname = ?,
+            age = ?,
+            type = ?,
+            description = ?,
+            aliases = ?,
+            updated_at = ?
+        WHERE id = ?
+    """, (
+        name,
+        surname,
+        age,
+        entity_type,
+        description,
+        json.dumps(aliases),
+        now,
+        entity_id
+    ))
 
     conn.commit()
     conn.close()
-
     
 
 def update_entity_age(entity_id, new_age):
